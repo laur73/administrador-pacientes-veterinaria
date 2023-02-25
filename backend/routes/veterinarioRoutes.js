@@ -1,5 +1,15 @@
 import express from 'express';
-import { registrar, perfil, confirmar, autenticar } from '../controllers/veterinarioController.js';
+import {
+	registrar,
+	perfil,
+	confirmar,
+	autenticar,
+	recuperarPassword,
+	comprobarToken,
+	nuevoPassword
+}
+	from '../controllers/veterinarioController.js';
+
 import checkAuth from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -13,6 +23,15 @@ router.post('/registrar', registrar)
 router.get('/confirmar/:token', confirmar)
 
 router.post('/login', autenticar)
+
+//Enviar email del password a recuperar
+router.post('/recuperar-password', recuperarPassword)
+
+//Verificar que el token generado sea válido
+router.get('/recuperar-password/:token', comprobarToken);
+
+//Enviar el nuevo password
+router.post('/recuperar-password/:token', nuevoPassword);
 
 //Rutas Privadas
 router.get('/perfil', checkAuth, perfil)

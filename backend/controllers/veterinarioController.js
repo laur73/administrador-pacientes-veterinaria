@@ -1,5 +1,6 @@
 import Veterinario from "../models/Veterinario.js";
 import generarJWT from "../helpers/generarJWT.js";
+import generarId from "../helpers/generarId.js";
 
 
 const registrar = async (req, res) => {
@@ -25,7 +26,11 @@ const registrar = async (req, res) => {
 }
 
 const perfil = (req, res) => {
-	res.json({ mensaje: "Consultando perfil" })
+	//Extraemos de la sesión
+	const { veterinario } = req;
+
+	//Obtenemos los datos de ese veterinario consultado
+	res.json({ veterinario });
 }
 
 const confirmar = async (req, res) => {
@@ -57,6 +62,7 @@ const autenticar = async (req, res) => {
 	//Comprobar si existe el veterinario a autenticar
 	const { email, password } = req.body;
 
+	//Creamos una instancia
 	const veterinario = await Veterinario.findOne({ email });
 
 	if (!veterinario) {
@@ -82,9 +88,40 @@ const autenticar = async (req, res) => {
 
 }
 
+//Enviar token al veterinario que olvidó su password
+const recuperarPassword = async (req, res) => {
+	const { email } = req.body;
+
+	const existeVeterinario = await Veterinario.findOne({ email });
+
+	if (!existeVeterinario) {
+		const error = new Error('El veterinario no está registrado');
+		return res.status(400).json({ msg: error.message });
+	}
+
+	try {
+		existeVeterinario.token = generarId();
+		await existeVeterinario.save();
+		res.json({ msg: 'Hemos enviado un email con las instrucciones' })
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const comprobarToken = (req, res) => {
+	res.json({ msg: 'Desde comprobar token' })
+}
+
+const nuevoPassword = (req, res) => {
+	res.json({ msg: 'Desde nuevo password' })
+}
+
 export {
 	registrar,
 	perfil,
 	confirmar,
-	autenticar
+	autenticar,
+	recuperarPassword,
+	comprobarToken,
+	nuevoPassword
 }

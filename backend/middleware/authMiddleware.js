@@ -1,5 +1,33 @@
-const checkAuth = (req, res, next) => {
-	console.log('Desde middleware custom');
+import jwt from 'jsonwebtoken'
+import Veterinario from '../models/Veterinario.js';
+
+const checkAuth = async (req, res, next) => {
+	let token;
+
+	//Cuando enviamos GET perfil en postman
+	if (req.headers.authorization &&
+		req.headers.authorization.startsWith('Bearer')
+	) {
+		//Descifrar el token
+		try {
+			token = req.headers.authorization.split(' ')[1];
+
+			const decoded = jwt.verify(token, process.env.JWT_SECRET);
+			//findById porque le estamos pasando el id en el token
+			//la asignamos a req para crear una sesion del veterinario
+			req.veterinario = await Veterinario.findById(decoded.id).select("-password -token -confirmado")
+			return next()
+		} catch (error) {
+			const e = new Error('Token no válido')
+			return res.status(403).json({ msg: e.message })
+		}
+	}
+
+	if (!token) {
+		const error = new Error('Token no válido o inexistente')
+		res.status(403).json({ msg: error.message })
+	}
+
 	next();
 }
 
