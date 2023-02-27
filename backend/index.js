@@ -2,23 +2,26 @@ import express from 'express';
 import dotenv from 'dotenv';
 import conectarDB from './config/db.js';
 import veterinarioRoutes from './routes/veterinarioRoutes.js';
+import pacienteRoutes from './routes/pacienteRoutes.js';
 
 //funcionalidad para el servidor
 const app = express();
 
 //para decirle a express como leer los request
-app.use(express.json())
+app.use(express.json());
 
 //Para leer las variables de entorno
-dotenv.config()
+dotenv.config();
 
-conectarDB()
+conectarDB();
 
 //manera en que express maneja el routing
-app.use('/api/veterinarios', veterinarioRoutes)
+app.use('/api/veterinarios', veterinarioRoutes);
+
+app.use('/api/pacientes', pacienteRoutes);
 
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
-	console.log(`Servidor funcionando en el puerto ${PORT}`)
+	console.log(`Servidor funcionando en el puerto ${PORT}`);
 })
