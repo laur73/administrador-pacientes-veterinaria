@@ -1,6 +1,55 @@
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios'
+import Alerta from '../components/Alerta';
 
 const Registrar = () => {
+
+	const [nombre, setNombre] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [repetirPassword, setRepetirPassword] = useState('');
+
+	const [alerta, setAlerta] = useState({});
+
+	const handleSubmit = async e => {
+		e.preventDefault();
+
+		if ([nombre, email, password, repetirPassword].includes('')) {
+			setAlerta({ msg: 'Hay campos vacíos', error: true })
+			return;
+		}
+
+		if (password.length < 6) {
+			setAlerta({ msg: 'La contraseña debe tener por lo menos 6 caractéres', error: true })
+			return;
+		}
+
+		if (password != repetirPassword) {
+			setAlerta({ msg: 'Las contraseñas no coinciden', error: true })
+			return;
+		}
+
+		setAlerta({})
+
+		//Crear el usuario en la API
+		try {
+			const url = 'http://localhost:4000/api/veterinarios/registrar'
+			await axios.post(url, { nombre, email, password })
+			setAlerta({ msg: 'Veterinario registrado, revisa tu email', error: false })
+			//Resetear los campos
+			setNombre('');
+			setEmail('');
+			setPassword('');
+			setRepetirPassword('')
+		} catch (error) {
+			setAlerta({ msg: error.response.data.msg, error: true })
+		}
+
+	}
+
+	const { msg } = alerta;
+
 	return (
 		<>
 			<div>
@@ -8,26 +57,29 @@ const Registrar = () => {
 			</div>
 
 			<div className="mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white">
-				<form>
+
+				{msg && <Alerta alerta={alerta} />}
+
+				<form onSubmit={handleSubmit}>
 
 					<div className="my-5">
 						<label className="uppercase text-gray-600 block text-xl bg- font-bold mb-3">Nombre</label>
-						<input type="text" placeholder="Escribe tu nombre..." className="border w-full p-3 bg-gray-50 rounded-md" />
+						<input type="text" placeholder="Escribe tu nombre..." className="border w-full p-3 bg-gray-50 rounded-md" value={nombre} onChange={e => setNombre(e.target.value)} />
 					</div>
 
 					<div className="my-5">
 						<label className="uppercase text-gray-600 block text-xl bg- font-bold mb-3">Correo Electrónico</label>
-						<input type="email" placeholder="Escribe tu correo electrónico..." className="border w-full p-3 bg-gray-50 rounded-md" />
+						<input type="email" placeholder="Escribe tu correo electrónico..." className="border w-full p-3 bg-gray-50 rounded-md" value={email} onChange={e => setEmail(e.target.value)} />
 					</div>
 
 					<div className="my-5">
 						<label className="uppercase text-gray-600 block text-xl font-bold mb-3">Contraseña</label>
-						<input type="password" placeholder="Escribe tu contraseña..." className="border w-full p-3 bg-gray-50 rounded-md" />
+						<input type="password" placeholder="Escribe tu contraseña..." className="border w-full p-3 bg-gray-50 rounded-md" value={password} onChange={e => setPassword(e.target.value)} />
 					</div>
 
 					<div className="my-5">
 						<label className="uppercase text-gray-600 block text-xl font-bold mb-3">Vuelve a Escribir tu Contraseña</label>
-						<input type="password" placeholder="Escribe de nuevo tu contraseña..." className="border w-full p-3 bg-gray-50 rounded-md" />
+						<input type="password" placeholder="Escribe de nuevo tu contraseña..." className="border w-full p-3 bg-gray-50 rounded-md" value={repetirPassword} onChange={e => setRepetirPassword(e.target.value)} />
 					</div>
 
 					<div className="my-5 flex justify-center">
