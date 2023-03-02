@@ -18,7 +18,7 @@ const registrar = async (req, res) => {
 	try {
 		const veterinario = new Veterinario(req.body);
 		const veterinarioGuardado = await veterinario.save();
-		res.json({ mensaje: "Usuario registrado" })
+		res.json(veterinarioGuardado)
 	} catch (error) {
 		console.log(error)
 	}
