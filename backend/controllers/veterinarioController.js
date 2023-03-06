@@ -36,7 +36,7 @@ const perfil = (req, res) => {
 	const { veterinario } = req;
 
 	//Obtenemos los datos de ese veterinario consultado
-	res.json({ veterinario });
+	res.json(veterinario);
 }
 
 const confirmar = async (req, res) => {
