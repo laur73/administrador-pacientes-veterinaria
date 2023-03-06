@@ -29,7 +29,7 @@ const AuthProvider = ({ children }) => {
 			}
 		}
 		autenticarUsuario();
-	})
+	}, [])
 
 	return (
 		<AuthContext.Provider value={{ auth, setAuth }}>
