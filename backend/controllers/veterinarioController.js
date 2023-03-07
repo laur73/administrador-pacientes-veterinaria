@@ -85,7 +85,12 @@ const autenticar = async (req, res) => {
 	//Revisar el password
 	if (await veterinario.comprobarPassword(password)) {
 		//Autenticar
-		res.json({ token: generarJWT(veterinario.id) })
+		res.json({
+			_id: veterinario._id,
+			nombre: veterinario.nombre,
+			email: veterinario.email,
+			token: generarJWT(veterinario.id)
+		})
 	} else {
 		const error = new Error('Password incorrecto');
 		return res.status(403).json({ msg: error.message })
