@@ -10,6 +10,7 @@ import NuevoPassword from "./pages/NuevoPassword";
 import Registrar from "./pages/Registrar";
 
 import AdministrarPacientes from "./pages/AdministrarPacientes";
+import Perfil from "./pages/Perfil";
 
 import { AuthProvider } from "./context/AuthProvider";
 
@@ -27,6 +28,7 @@ function App() {
 					</Route>
 					<Route path="/admin" element={<RutaProtegida />}>
 						<Route index element={<AdministrarPacientes />} />
+						<Route path="perfil" element={<Perfil />} />
 					</Route>
 				</Routes>
 			</AuthProvider>
