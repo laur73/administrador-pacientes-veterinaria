@@ -17,16 +17,31 @@ const Registrar = () => {
 
 		if ([nombre, email, password, repetirPassword].includes('')) {
 			setAlerta({ msg: 'Hay campos vacíos', error: true })
+
+			setTimeout(function () {
+				setAlerta({})
+			}, 3000);
+
 			return;
 		}
 
 		if (password.length < 6) {
 			setAlerta({ msg: 'La contraseña debe tener por lo menos 6 caractéres', error: true })
+
+			setTimeout(function () {
+				setAlerta({})
+			}, 3000);
+
 			return;
 		}
 
 		if (password != repetirPassword) {
 			setAlerta({ msg: 'Las contraseñas no coinciden', error: true })
+
+			setTimeout(function () {
+				setAlerta({})
+			}, 3000);
+
 			return;
 		}
 
@@ -37,13 +52,23 @@ const Registrar = () => {
 			const url = `/veterinarios/registrar`
 			await clienteAxios.post(url, { nombre, email, password })
 			setAlerta({ msg: 'Veterinario registrado, revisa tu email', error: false })
+
 			//Resetear los campos
 			setNombre('');
 			setEmail('');
 			setPassword('');
 			setRepetirPassword('')
+
+			setTimeout(function () {
+				setAlerta({})
+			}, 3000);
+
 		} catch (error) {
 			setAlerta({ msg: error.response.data.msg, error: true })
+
+			setTimeout(function () {
+				setAlerta({})
+			}, 3000);
 		}
 
 	}

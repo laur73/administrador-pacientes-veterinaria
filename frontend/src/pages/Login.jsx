@@ -19,6 +19,11 @@ const Login = () => {
 
 		if ([email, password].includes('')) {
 			setAlerta({ msg: 'Todos los campos son obligatorios', error: true })
+
+			setTimeout(function () {
+				setAlerta({})
+			}, 3000);
+
 			return;
 		}
 
@@ -29,6 +34,10 @@ const Login = () => {
 			navigate('/admin')
 		} catch (error) {
 			setAlerta({ msg: error.response.data.msg, error: true })
+
+			setTimeout(function () {
+				setAlerta({})
+			}, 3000);
 		}
 	}
 
