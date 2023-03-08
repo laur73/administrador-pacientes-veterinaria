@@ -33,7 +33,7 @@ export const PacientesProvider = ({ children }) => {
 		}
 
 		obtenerPacientes();
-	}, [])
+	}, [auth])
 
 	const guardarPaciente = async (paciente) => {
 
