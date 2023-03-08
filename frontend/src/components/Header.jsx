@@ -13,7 +13,7 @@ const Header = () => {
 				<h1 className="font-bold text-2xl text-center text-white">Administrador de Pacientes de <span className="text-black">Veterinaria</span>
 				</h1>
 
-				<nav className="flex flex-col lg:flex-row gap-4 items-center mt-6 lg:mt-0">
+				<nav className="flex lg:flex-row gap-5 items-center mt-6 lg:mt-0">
 					<Link to="/admin" className="text-white text-lg font-bold">Pacientes</Link>
 					<Link to="/admin/perfil" className="text-white text-lg font-bold">Perfil</Link>
 
